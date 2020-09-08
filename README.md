@@ -1,2 +1,2 @@
-# logistica
+# logística
 sistema para transportadora
