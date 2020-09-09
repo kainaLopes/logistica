@@ -1,0 +1,300 @@
+-- phpMyAdmin SQL Dump
+-- version 5.0.2
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Tempo de geração: 09-Set-2020 às 00:48
+-- Versão do servidor: 10.4.11-MariaDB
+-- versão do PHP: 7.2.31
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Banco de dados: `logistica`
+--
+CREATE DATABASE IF NOT EXISTS `logistica` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `logistica`;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `administrador`
+--
+
+CREATE TABLE `administrador` (
+  `id` int(11) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `nome` varchar(100) DEFAULT NULL,
+  `senha` varchar(32) DEFAULT NULL,
+  `nascimento` datetime DEFAULT NULL,
+  `cpf` varchar(14) DEFAULT NULL,
+  `endereco` varchar(100) DEFAULT NULL,
+  `telefone` varchar(14) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `cliente`
+--
+
+CREATE TABLE `cliente` (
+  `id` int(11) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `nome` varchar(100) DEFAULT NULL,
+  `nascimento` datetime DEFAULT NULL,
+  `cpf` varchar(14) DEFAULT NULL,
+  `endereco` varchar(100) DEFAULT NULL,
+  `telefone` varchar(14) DEFAULT NULL,
+  `senha` varchar(32) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `dashboard`
+--
+
+CREATE TABLE `dashboard` (
+  `id` int(11) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `nome` varchar(100) DEFAULT NULL,
+  `nascimento` datetime DEFAULT NULL,
+  `cpf` varchar(14) DEFAULT NULL,
+  `cnpj` varchar(18) DEFAULT NULL,
+  `endereco` varchar(100) DEFAULT NULL,
+  `telefone` varchar(20) DEFAULT NULL,
+  `placa` varchar(8) DEFAULT NULL,
+  `anomoto` int(4) DEFAULT NULL,
+  `fk_clienteDash` int(11) DEFAULT NULL,
+  `fk_fornecedorDash` int(11) DEFAULT NULL,
+  `fk_motoboyDash` int(11) DEFAULT NULL,
+  `fk_entregaDash` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `entrega`
+--
+
+CREATE TABLE `entrega` (
+  `id` int(11) NOT NULL,
+  `datapedido` date DEFAULT NULL,
+  `produto` varchar(100) DEFAULT NULL,
+  `quantidade_produto` int(11) DEFAULT NULL,
+  `categoria` varchar(50) DEFAULT NULL,
+  `preco` double DEFAULT NULL,
+  `fk_cliente` int(11) DEFAULT NULL,
+  `fk_fornecedor` int(11) DEFAULT NULL,
+  `fk_motoboy` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `fornecedor`
+--
+
+CREATE TABLE `fornecedor` (
+  `id` int(11) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `nome` varchar(100) DEFAULT NULL,
+  `nascimento` datetime DEFAULT NULL,
+  `cpf` varchar(14) DEFAULT NULL,
+  `cnpj` varchar(18) DEFAULT NULL,
+  `endereco` varchar(100) DEFAULT NULL,
+  `telefone` varchar(14) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `fornecedor_solicita_entrega`
+--
+
+CREATE TABLE `fornecedor_solicita_entrega` (
+  `id` int(11) NOT NULL,
+  `data` date DEFAULT NULL,
+  `fk_fornecedorS` int(11) DEFAULT NULL,
+  `fk_entregaS` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `login`
+--
+
+CREATE TABLE `login` (
+  `id` int(11) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `senha` varchar(32) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `motoboy`
+--
+
+CREATE TABLE `motoboy` (
+  `id` int(11) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `nome` varchar(100) DEFAULT NULL,
+  `nascimento` datetime DEFAULT NULL,
+  `cpf` varchar(14) DEFAULT NULL,
+  `endereco` varchar(100) DEFAULT NULL,
+  `telefone` varchar(14) DEFAULT NULL,
+  `placa` varchar(8) DEFAULT NULL,
+  `anomoto` int(4) DEFAULT NULL,
+  `senha` varchar(32) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Índices para tabelas despejadas
+--
+
+--
+-- Índices para tabela `administrador`
+--
+ALTER TABLE `administrador`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `cliente`
+--
+ALTER TABLE `cliente`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `dashboard`
+--
+ALTER TABLE `dashboard`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_clienteDash` (`fk_clienteDash`),
+  ADD KEY `fk_fornecedorDash` (`fk_fornecedorDash`),
+  ADD KEY `fk_motoboyDash` (`fk_motoboyDash`),
+  ADD KEY `fk_entregaDash` (`fk_entregaDash`);
+
+--
+-- Índices para tabela `entrega`
+--
+ALTER TABLE `entrega`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_cliente` (`fk_cliente`),
+  ADD KEY `fk_fornecedor` (`fk_fornecedor`),
+  ADD KEY `fk_motoboy` (`fk_motoboy`);
+
+--
+-- Índices para tabela `fornecedor`
+--
+ALTER TABLE `fornecedor`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `fornecedor_solicita_entrega`
+--
+ALTER TABLE `fornecedor_solicita_entrega`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_fonecedorS` (`fk_fornecedorS`),
+  ADD KEY `fk_entregaS` (`fk_entregaS`);
+
+--
+-- Índices para tabela `login`
+--
+ALTER TABLE `login`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `motoboy`
+--
+ALTER TABLE `motoboy`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT de tabelas despejadas
+--
+
+--
+-- AUTO_INCREMENT de tabela `administrador`
+--
+ALTER TABLE `administrador`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `cliente`
+--
+ALTER TABLE `cliente`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `dashboard`
+--
+ALTER TABLE `dashboard`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `fornecedor`
+--
+ALTER TABLE `fornecedor`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `fornecedor_solicita_entrega`
+--
+ALTER TABLE `fornecedor_solicita_entrega`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `login`
+--
+ALTER TABLE `login`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `motoboy`
+--
+ALTER TABLE `motoboy`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Restrições para despejos de tabelas
+--
+
+--
+-- Limitadores para a tabela `dashboard`
+--
+ALTER TABLE `dashboard`
+  ADD CONSTRAINT `fk_clienteDash` FOREIGN KEY (`fk_clienteDash`) REFERENCES `cliente` (`id`),
+  ADD CONSTRAINT `fk_entregaDash` FOREIGN KEY (`fk_entregaDash`) REFERENCES `entrega` (`id`),
+  ADD CONSTRAINT `fk_fornecedorDash` FOREIGN KEY (`fk_fornecedorDash`) REFERENCES `fornecedor` (`id`),
+  ADD CONSTRAINT `fk_motoboyDash` FOREIGN KEY (`fk_motoboyDash`) REFERENCES `motoboy` (`id`);
+
+--
+-- Limitadores para a tabela `entrega`
+--
+ALTER TABLE `entrega`
+  ADD CONSTRAINT `fk_cliente` FOREIGN KEY (`fk_cliente`) REFERENCES `cliente` (`id`),
+  ADD CONSTRAINT `fk_fornecedor` FOREIGN KEY (`fk_fornecedor`) REFERENCES `fornecedor` (`id`),
+  ADD CONSTRAINT `fk_motoboy` FOREIGN KEY (`fk_motoboy`) REFERENCES `motoboy` (`id`);
+
+--
+-- Limitadores para a tabela `fornecedor_solicita_entrega`
+--
+ALTER TABLE `fornecedor_solicita_entrega`
+  ADD CONSTRAINT `fk_entregaS` FOREIGN KEY (`fk_entregaS`) REFERENCES `entrega` (`id`),
+  ADD CONSTRAINT `fk_fonecedorS` FOREIGN KEY (`fk_fornecedorS`) REFERENCES `fornecedor` (`id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
