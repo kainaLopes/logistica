@@ -1,2 +1,2 @@
 # logística
-sistema para transportadora teste kaina
+sistema para transportadora
