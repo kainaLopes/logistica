@@ -1,0 +1,172 @@
+Schema::create('estado', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('nome');
+            $table->string('sigla');
+            $table->rememberToken();
+            $table->timestamps();
+};
+
+
+
+
+Schema::create('cidade', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('nome');
+            $table->rememberToken();
+            $table->timestamps();
+};
+
+
+
+Schema::create('administrador', function (Blueprint $table) {v
+            $table->increments('id');
+            $table->string('nome');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
+            $table->timestamps();
+};
+
+
+
+Schema::create('cliente', function (Blueprint $table) {v
+            $table->increments('id');
+            $table->string('nome');
+            $table->string('email')->unique();
+	    $table->date('nascimento');
+	    $table->string('cpf');
+	    $table->string('cnpj');
+	    $table->string('cep');
+	    $table->string('bairro');
+	    $table->string('endereco');
+	    $table->numeric('numero');
+	    $table->string('telefone'); 	
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
+            $table->timestamps();
+};
+
+
+Schema::create('funcionario', function (Blueprint $table) {v
+            $table->increments('id');
+            $table->string('nome');
+	        $table->string('cpf');
+            $table->string('email')->unique();
+            $table->date('nascimento');
+	        $table->string('numero');
+	        $table->string('bairro');
+            $table->string('telefone');
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
+            $table->timestamps();
+	        $table->unsignedBigInteger('estado_id');
+	        $table->unsignedBigInteger('cidade_id');	
+            $table->foreign('estado_id')->references('id')->on('estados');
+            $table->foreign('cidade_id')->references('id')->on('cidades');
+};
+
+
+Schema::create('dashboard', function (Blueprint $table) {v
+            $table->increments('id');
+            $table->rememberToken();
+            $table->timestamps();
+            $table->unsignedBigInteger('fornecedor_id');
+	    $table->unsignedBigInteger('funcionario_id');
+	    $table->unsignedBigInteger('cliente_id');
+            $table->unsignedBigInteger('administrador_id');
+	    $table->unsignedBigInteger('entregador_id');	
+            $table->foreign('fornecedor_id')->references('id')->on('fornecedor');
+	    $table->foreign('funcionario_id')->references('id')->on('funcionario');
+ 	    $table->foreign('cliente_id')->references('id')->on('cliente');
+	    $table->foreign('administrador_id')->references('id')->on('administrador');
+	    $table->foreign('entregador_id')->references('id')->on('entregador');
+ 
+};
+
+
+//verficar se inclui somente o dashboard.
+Schema::create('administrador_supervisiona_entrega', function (Blueprint $table) {
+            $table->increments('id');
+            $table->rememberToken();
+            $table->timestamps();
+            $table->unsignedBigInteger('fornecedor_id');
+	    $table->unsignedBigInteger('funcionario_id');
+	    $table->unsignedBigInteger('cliente_id');
+            $table->unsignedBigInteger('administrador_id');
+	    $table->unsignedBigInteger('entregador_id');	
+            $table->foreign('fornecedor_id')->references('id')->on('fornecedor');
+	    $table->foreign('funcionario_id')->references('id')->on('funcionario');
+ 	    $table->foreign('cliente_id')->references('id')->on('cliente');
+	    $table->foreign('administrador_id')->references('id')->on('administrador');
+	    $table->foreign('entregador_id')->references('id')->on('entregador');
+ 
+};
+
+
+Schema::create('entregador', function (Blueprint $table) {v
+            $table->increments('id');
+            $table->string('nome');
+            $table->string('cpf');
+            $table->string('email')->unique();
+            $table->date('nascimento');
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+	    $table->string('bairro');
+	    $table->string('validade');
+	    $table->string('cep');
+	    $table->string('rg');
+	    $table->string('endereco');
+	    $table->string('numero');	
+	    $table->string('telefone');
+	    $table->('habilitacao);
+            $table->rememberToken();
+            $table->timestamps();
+	    $table->unsignedBigInteger('estado_id');
+	    $table->unsignedBigInteger('cidade_id');	
+            $table->foreign('estado_id')->references('id')->on('estado');
+            $table->foreign('cidade_id')->references('id')->on('cidade');
+};
+
+Schema::create('veiculo', function (Blueprint $table) {v
+            $table->increments('id');
+            $table->string('placa');
+            $table->string('modelo');
+	        $table->string('marca');
+            $table->string('tipo');
+            $table->numeric('renavam');
+            $table->date('ano');
+            $table->string('cor');
+            $table->string('password');
+            $table->rememberToken();
+            $table->timestamps();
+	    $table->unsignedBigInteger('entregador_id');	
+            $table->foreign('entregador_id')->references('id')->on('entregador');
+};
+
+
+Schema::create('contas', function (Blueprint $table) {v
+            $table->increments('id');
+            $table->decimal('refeição',5,2);
+            $table->decimal('borracharia',5,2);
+            $table->decimal('despgerais',5,2);
+            $table->decimal('combustivel',5,2);
+            $table->decimal('saldo',5,2);
+            $table->decimal('mecanico',5,2);
+	        $table->unsignedBigInteger('caixa_id');
+            $table->unsignedBigInteger('veiculo_id');	
+            $table->foreign('caixa_id')->references('id')->on('caixa');	
+            $table->foreign('veiculo_id')->references('id')->on('veiculo');            
+
+};
+Schema::create('caixa', function (Blueprint $table) {
+            $table->increments('id');
+	    $table->date('data'); 	
+            $table->unsignedBigInteger('entrega_id');	
+            $table->foreign('entrega_id')->references('id')->on('entrega');	
+};
+
+
+
